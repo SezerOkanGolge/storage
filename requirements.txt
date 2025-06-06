@@ -1,18 +1,21 @@
-# Ortak kütüphaneler
 torch==2.1.0
-transformers==4.31.0
-datasets
-flask
-flask-cors
-joblib
-scikit-learn
-opencv-python
-numpy
-requests
+numpy==1.26.4
 einops
 safetensors
 
-# Metin tarafı
+transformers==4.31.0
+datasets
+
+flask
+flask-cors
+
+scikit-learn
+joblib
+requests
+
+opencv-python
+Pillow
+
 beautifulsoup4==4.12.2
 wikipedia
 wikipedia-api

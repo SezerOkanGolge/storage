@@ -1,0 +1,16 @@
+torch==2.1.0
+fastai==2.1.10
+transformers==4.31.0
+datasets
+flask
+flask-cors
+joblib
+scikit-learn
+opencv-python
+numpy
+beautifulsoup4
+wikipedia-api
+wikipedia
+requests
+googlesearch-python
+click==8.0.4

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" type="image/png" href="../assets/img/ai.png">
+        <title>FAKE DETECT AI</title>
+        <!--     Fonts and icons     -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+        <!-- Font Awesome Icons -->
+        <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous">  </script>
+        <!-- CSS Files -->
+        <link id="pagestyle" href="../assets/css/gen.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
+    </head>
+  
+    <body class="g-sidenav-show bg-primary position-absolute w-100 user-select-none">
+        <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 mt-3 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
+            <nav class="sidenav-header-2" aria-label="breadcrumb">
+                <a class="navbar-brand m-0" href="index.html" target="_self">
+                <img src="../assets/img/ai.png" class="navbar-brand-img h-100" alt="main_logo">
+                <span class="ms-1 display-6 font-weight-bolder text-white">FAKE DETECT AI</span>
+                </a>
+            </nav>
+            <div class="col-lg-9">
+                <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link-2 text-white" target="_self">Ana Sayfa</a>
+                </li>
+                <li class="nav-item">
+                    <a href="aboutUs.html" class="nav-link-2 text-white" target="_blank">Hakkımızda</a>
+                </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-xl-6 col-md-12 mb-4">
+                    <h2 class="text-white mb-4">Görsel Tabanlı Sahte Bilgi Tespiti</h2>
+                    <label class="form-label text-white"><h6 class="text-white">Bir görsel seçin:</h6></label>
+                    <input type="file" id="imageInput" class="form-control mb-3" accept="image/*">
+                    <img id="previewImage" src="#" alt="Yüklenen görsel burada gösterilir" class="img-fluid d-none border border-light rounded" />
+                    <button id="dButton" class="btn btn-warning mt-3">Tespit Et</button>
+                    <div id="loadingMessage" class="loading">
+                        <i class="fas fa-spinner fa-spin"></i> AI modelleri analiz ediyor...
+                    </div>
+                </div>
+            
+                <div class="col-xl-6 col-md-12">
+                    <label class="form-label text-white"><h6 class="text-white">Tespit Sonucu:</h6></label>
+                    <textarea class="form-control-2" id="imageResultArea" rows="24" readonly></textarea>
+                </div>
+            </div>
+        </div>
+        <footer class="footer p-3  ">
+            <div class="container-fluid">
+                <div class="row align-items-center justify-content-lg-between">
+                    <div class="mb-lg-0 mb-4">
+                        <div class="text-center text-sm text-white">
+                            © <script>
+                            document.write(new Date().getFullYear())
+                            </script>,
+                                made with by
+                            <a href="https://www.uludag.edu.tr" class="font-weight-bolder" target="_blank">Uludag University Students</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+<script>
+  const BACKEND_URL = 'https://fakedetectai.onrender.com';
+
+  document.getElementById("imageInput").addEventListener("change", function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const img = document.getElementById("previewImage");
+      img.src = e.target.result;
+      img.classList.remove("d-none");
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById("dButton").addEventListener("click", async function () {
+    const file = document.getElementById("imageInput").files[0];
+    const resultBox = document.getElementById("imageResultArea");
+    const loadingMsg = document.getElementById("loadingMessage");
+    const detectBtn = document.getElementById("dButton");
+
+    if (!file) {
+      alert("⚠️ Lütfen önce bir görsel seçin.");
+      return;
+    }
+
+    loadingMsg.style.display = "block";
+    detectBtn.disabled = true;
+    detectBtn.textContent = "Analiz Ediliyor...";
+    resultBox.value = "AI modelleri görseli analiz ediyor...\nLütfen bekleyin...";
+
+    try {
+      const base64 = await fileToBase64(file);
+      const response = await fetch(`${BACKEND_URL}/detect`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: base64 })
+      });
+
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+      const data = await response.json();
+
+      const isOverallFake = data.is_fake;
+      const confidence = (data.confidence * 100).toFixed(1);
+      const icon = isOverallFake ? "🚨" : "✅";
+      const status = isOverallFake ? "SAHTE" : "GERÇEK";
+
+      let allModelText = "";
+
+      for (const [model, result] of Object.entries(data.individual_results)) {
+        allModelText += `\n- ${model} → ${(result.fake_probability * 100).toFixed(1)}% → ${result.is_fake ? "🟥 Sahte" : "🟩 Gerçek"}`;
+      }
+
+      resultBox.value =
+        `${icon} GÖRSEL ANALİZİ TAMAMLANDI\n` +
+        `📊 Genel Değerlendirme: ${status}\n` +
+        `🎯 Güven Oranı: %${confidence}\n` +
+        `🧠 Yapay zeka analiz sonucu: ${data.summary}\n\n` +
+        `📌 Model Bazlı Sonuçlar:` + allModelText +
+        `\n\n⚠️ Not: Bu yapay zeka sistemi istatistiksel tahmin üretir, %100 doğruluk garantisi vermez.`;
+
+    } catch (error) {
+      console.error('Hata:', error);
+      resultBox.value = `❌ İşlem gerçekleştirilemedi. Sunucuya bağlanılamıyor olabilir.\n\nLütfen internet bağlantınızı ve sistemin arka planda (Flask sunucusu) çalıştığından emin olun.`;
+    }
+
+    loadingMsg.style.display = "none";
+    detectBtn.disabled = false;
+    detectBtn.textContent = "Tespit Et";
+  });
+
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
+</script>
+
+    </body>
+</html>

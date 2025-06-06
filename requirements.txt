@@ -1,21 +1,19 @@
-flask==2.3.3
-flask-cors==4.0.0
-click==8.1.7
-
+# Ortak kütüphaneler
 torch==2.1.0
-fastai==2.1.10
 transformers==4.31.0
-datasets==2.14.5
-safetensors==0.3.1
-einops==0.6.1
+datasets
+flask
+flask-cors
+joblib
+scikit-learn
+opencv-python
+numpy
+requests
+einops
+safetensors
 
-opencv-python==4.8.1.78
-numpy==1.23.5
-scikit-learn==1.3.2
-joblib==1.3.2
-
+# Metin tarafı
 beautifulsoup4==4.12.2
-wikipedia==1.4.0
-wikipedia-api==0.6.0
-requests==2.31.0
-googlesearch-python==1.1.0
+wikipedia
+wikipedia-api
+googlesearch-python

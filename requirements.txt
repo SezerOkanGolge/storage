@@ -14,9 +14,9 @@ wikipedia==1.4.0
 wikipedia-api==0.6.0
 requests==2.31.0
 googlesearch-python==1.1.0
-click==8.0.4
+click==8.1.7
 einops==0.6.1
 safetensors==0.3.3
 tqdm==4.66.1
 sentencepiece==0.1.99
-spacy==3.1.6
+spacy==3.6.1

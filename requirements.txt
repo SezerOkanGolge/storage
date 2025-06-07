@@ -19,3 +19,4 @@ googlesearch-python==1.2.3
 einops==0.6.1
 safetensors==0.4.0
 Pillow==10.2.0
+vision-transformer-pytorch==0.0.5

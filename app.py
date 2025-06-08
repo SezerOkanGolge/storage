@@ -16,6 +16,14 @@ from image_processor import ImageProcessor
 # Metin açıklaması için
 from fact_checker import get_explanation
 
+try:
+    import torch
+except ImportError:
+    import subprocess
+    import sys
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "torch==2.0.1"])
+    import torch
+
 # Flask uygulaması
 app = Flask(__name__)
 CORS(app)

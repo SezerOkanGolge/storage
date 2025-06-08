@@ -5,6 +5,11 @@ try:
 except ImportError:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "torch==2.2.0"])
     import torch
+try:
+    from PIL import Image
+except ModuleNotFoundError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "Pillow"])
+    from PIL import Image
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import os

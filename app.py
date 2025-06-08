@@ -1,6 +1,11 @@
 import subprocess
 import sys
 try:
+    import vision_transformer_pytorch
+except ImportError:
+    install("vision-transformer-pytorch")
+    import vision_transformer_pytorch
+try:
     import torch
 except ImportError:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "torch==2.2.0"])

@@ -1,3 +1,10 @@
+import subprocess
+import sys
+try:
+    import torch
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "torch==2.2.0"])
+    import torch
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import os
@@ -8,14 +15,6 @@ from PIL import Image
 from io import BytesIO
 import base64
 import json
-import subprocess
-import sys
-
-try:
-    import torch
-except ImportError:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "torch==2.2.0"])
-    import torch
     
 # Görsel analiz için
 from model_loader import models

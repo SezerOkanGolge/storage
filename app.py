@@ -8,7 +8,15 @@ from PIL import Image
 from io import BytesIO
 import base64
 import json
+import subprocess
+import sys
 
+try:
+    import torch
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "torch==2.2.0"])
+    import torch
+    
 # Görsel analiz için
 from model_loader import models
 from image_processor import ImageProcessor
@@ -16,13 +24,7 @@ from image_processor import ImageProcessor
 # Metin açıklaması için
 from fact_checker import get_explanation
 
-try:
-    import torch
-except ImportError:
-    import subprocess
-    import sys
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "torch==2.0.1"])
-    import torch
+
 
 # Flask uygulaması
 app = Flask(__name__)

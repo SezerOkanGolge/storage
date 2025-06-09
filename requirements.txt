@@ -14,3 +14,4 @@ einops
 safetensors
 transformers==4.36.2
 datasets
+vision-transformer-pytorch==1.0.3

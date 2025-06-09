@@ -2,7 +2,7 @@ flask
 flask-cors
 joblib
 scikit-learn
-opencv-python-headless==4.8.0.74
+opencv-python-headless==4.5.5.64
 numpy<2.0.0
 beautifulsoup4==4.12.2
 wikipedia-api

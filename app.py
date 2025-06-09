@@ -15,11 +15,6 @@ try:
 except ModuleNotFoundError:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "Pillow"])
     from PIL import Image
-try:
-    import torchvision
-except ImportError:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "torchvision"])
-    import torchvision
 
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS

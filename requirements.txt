@@ -2,7 +2,7 @@ flask
 flask-cors
 joblib
 scikit-learn
-opencv-python
+opencv-python-headless==4.8.0.74
 numpy<2.0.0
 beautifulsoup4==4.12.2
 wikipedia-api
@@ -15,5 +15,4 @@ safetensors
 transformers==4.36.2
 datasets
 vision-transformer-pytorch==1.0.3
-opencv-python-headless==4.8.0.74
 fastai==2.1.10

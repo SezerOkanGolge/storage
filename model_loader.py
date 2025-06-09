@@ -40,7 +40,7 @@ def load_sklearn_model(filename):
     try:
         url = f"https://huggingface.co/{HF_REPO}/resolve/main/{filename}"
         response = requests.get(url)
-        model = pickle.load(BytesIO(response.content))
+        model = pickle.load(BytesIO(response.content), encoding="latin1")
         print(f"[✓] Sklearn modeli yüklendi: {filename}")
         return model
     except Exception as e:

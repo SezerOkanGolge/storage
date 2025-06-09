@@ -1,3 +1,4 @@
+# model_loader.py
 import torch
 import pickle
 import sys
@@ -9,21 +10,21 @@ from huggingface_hub import hf_hub_download
 
 HF_REPO = "sezerokangolge/imgModels"
 
+# PosixPath düzeltmesi
 class PosixPath(str):
     def __new__(cls, *args, **kwargs):
         return str.__new__(cls, *args)
 
 sys.modules['pathlib'].PosixPath = PosixPath
 
-def get_my_x(o):
-    return o
-
-def get_my_y(o):
-    return o
+# Dummy metotlar (fastai pickle bağımlılığı)
+def get_my_x(o): return o
+def get_my_y(o): return o
 
 sys.modules['__main__'].get_my_x = get_my_x
 sys.modules['__main__'].get_my_y = get_my_y
 
+# Gerekli custom model sınıfları (pickle için)
 from model import (
     PatchEmbedding, Transformer, VIT,
     TransformerBlock, residual, multiHeadAttention
@@ -36,6 +37,7 @@ sys.modules['__main__'].TransformerBlock = TransformerBlock
 sys.modules['__main__'].residual = residual
 sys.modules['__main__'].multiHeadAttention = multiHeadAttention
 
+# Sklearn modeli Hugging Face üzerinden indir
 def load_sklearn_model(filename):
     try:
         url = f"https://huggingface.co/{HF_REPO}/resolve/main/{filename}"
@@ -47,6 +49,7 @@ def load_sklearn_model(filename):
         print(f"[X] Sklearn model hatası: {filename} → {e}")
         return None
 
+# Torch modeli Hugging Face üzerinden indir
 def load_torch_model(filename):
     try:
         model_path = hf_hub_download(repo_id=HF_REPO, filename=filename)
@@ -57,6 +60,7 @@ def load_torch_model(filename):
         print(f"[X] Torch model hatası: {filename} → {e}")
         return None
 
+# Model listesi
 model_files = [
     "Copy_Move_FIM_fixed.pkl",
     "Inpainting_FIM_fixed.pkl",
@@ -69,6 +73,7 @@ model_files = [
     "model_2.pth"
 ]
 
+# Modelleri yükle
 models = []
 for filename in model_files:
     if filename.endswith(".pkl"):

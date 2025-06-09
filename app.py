@@ -1,5 +1,11 @@
 import subprocess
 import sys
+
+class PosixPath(str):
+    def __new__(cls, *args, **kwargs):
+        return str.__new__(cls, *args)
+
+sys.modules['pathlib'].PosixPath = PosixPath
 try:
     import torchvision
 except ImportError:
